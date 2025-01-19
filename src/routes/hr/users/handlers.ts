@@ -1,6 +1,5 @@
 import type { AppRouteHandler } from "@/lib/types";
 import type { CreateRoute, GetOneRoute, ListRoute, PatchRoute, RemoveRoute, SigninRoute } from "../users/routes";
-import { log } from "node:console";
 import db from "@/db";
 import env from "@/env";
 import { noObjectFoundSchema } from "@/lib/constants";

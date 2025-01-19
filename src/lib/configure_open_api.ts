@@ -1,8 +1,8 @@
-import { apiReference } from "@scalar/hono-api-reference";
+import type { AppOpenAPI } from "./types";
 
 import env from "@/env";
 
-import type { AppOpenAPI } from "./types";
+import { apiReference } from "@scalar/hono-api-reference";
 
 import packageJSON from "../../package.json" with { type: "json" };
 

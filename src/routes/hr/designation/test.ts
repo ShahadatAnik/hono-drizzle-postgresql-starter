@@ -1,14 +1,14 @@
 /* eslint-disable ts/ban-ts-comment */
-import { testClient } from "hono/testing";
 import { execSync } from "node:child_process";
 import fs from "node:fs";
-import * as HttpStatusPhrases from "stoker/http-status-phrases";
-import { afterAll, beforeAll, describe, expect, expectTypeOf, it } from "vitest";
-import { ZodIssueCode } from "zod";
-
 import env from "@/env";
 import { ZOD_ERROR_CODES, ZOD_ERROR_MESSAGES } from "@/lib/constants";
 import createApp from "@/lib/create_app";
+import { testClient } from "hono/testing";
+
+import * as HttpStatusPhrases from "stoker/http-status-phrases";
+import { afterAll, beforeAll, describe, expect, expectTypeOf, it } from "vitest";
+import { ZodIssueCode } from "zod";
 
 import router from ".";
 
@@ -28,10 +28,12 @@ describe("tasks routes", () => {
   });
 
   it("post /tasks validates the body when creating", async () => {
-    const response = await client.tasks.$post({
+    const response = await client.hr.designation.$post({
       // @ts-expect-error
       json: {
-        done: false,
+        uuid: "1",
+        designation: "",
+        created_at: "2024-09-04 12:35:01",
       },
     });
     expect(response.status).toBe(422);
