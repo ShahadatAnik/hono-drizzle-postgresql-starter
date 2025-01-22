@@ -23,15 +23,8 @@ if (isGenerateOrIntrospect) {
     ...defaultConfig,
     schemaFilter: [
       "commercial",
-      "delivery",
       "hr",
-      "lab_dip",
-      "material",
-      "public",
-      "purchase",
-      "slider",
-      "zipper",
-      "thread",
+
     ],
   };
 }

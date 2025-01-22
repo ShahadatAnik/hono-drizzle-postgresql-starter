@@ -15,14 +15,17 @@ export const bank = commercial.table("bank", {
   policy: text("policy"),
   created_at: DateTime("created_at").notNull(),
   updated_at: DateTime("updated_at"),
-  created_by: defaultUUID("created_by"),
+  created_by: defaultUUID("created_by").references(() => users.uuid, {
+    onDelete: "set null",
+    onUpdate: "cascade",
+  }),
   routing_no: text("routing_no"),
   remarks: text("remarks"),
 });
 
 //* relations
-export const commercial_bank_rel = relations(bank, ({ one }) => ({
-  created_by: one(users),
-}));
+// export const commercial_bank_rel = relations(bank, ({ one }) => ({
+//   created_by: one(users),
+// }));
 
 export default commercial;

@@ -7,6 +7,7 @@ export interface IPayload {
   uuid: string;
   username: string;
   email: string;
+  can_access: string | null;
   exp: number;
 }
 
@@ -23,6 +24,7 @@ export const signinOutputSchema = z.object({
     uuid: z.string(),
     username: z.string(),
     email: z.string(),
+    can_access: z.string(),
     exp: z.number(),
   }) as z.Schema<IPayload>,
   token: z.string(),

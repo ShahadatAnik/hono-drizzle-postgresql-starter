@@ -1,70 +1,44 @@
-// import { compare, genSalt, hash } from "bcrypt";
-// import jwt from "jsonwebtoken";
+import type { IPayload } from "@/routes/hr/users/utils";
+import type { Context } from "hono";
+import env from "@/env";
+import { compareSync, genSalt, genSaltSync, hash, hashSync } from "bcrypt-ts";
+import jwt from "jsonwebtoken";
 
-// import env from "@/env";
+const { sign, verify } = jwt;
 
-// const { sign, verify } = jwt;
+export function hashPassword(hash: string) {
+  const salt = genSaltSync(env.SALT);
+  return hashSync(hash, salt);
+}
 
-// export async function HashPass(password: string) {
-//   const salt = await genSalt(Number(env.SALT));
-//   const hashPassword = await hash(password.toString(), Number.parseInt(salt));
-//   return hashPassword;
-// }
+export async function HashPass(password: string) {
+  const salt = await genSalt(Number(env.SALT));
+  const hashPassword = await hash(password.toString(), Number.parseInt(salt));
+  return hashPassword;
+}
 
-// export async function ComparePass(password: string, hashPassword: string) {
-//   return await compare(password, hashPassword);
-// }
+export async function ComparePass(password: string, hashPassword: string) {
+  return compareSync(password, hashPassword);
+}
 
-// export function CreateToken(user, time = "24h") {
-//   const { uuid, name, email, department } = user;
-//   const payload = {
-//     uuid,
-//     name,
-//     email,
-//     department,
-//   };
+export async function CreateToken(payload: IPayload) {
+  return sign(payload, env.PRIVATE_KEY);
+}
 
-//   const token = sign(payload, env.PRIVATE_KEY, { expiresIn: time });
+export async function VerifyToken(token: string, c: Context) {
+  const { url, method } = c.env.outgoing.req;
 
-//   if (!token) {
-//     return {
-//       success: false,
-//       error: "Error Signing Token",
-//       raw: err,
-//     };
-//   }
+  if (url === "/v1/signin" && method === "POST")
+    return true;
 
-//   user.token = token;
-//   return {
-//     success: true,
-//     token,
-//   };
-// }
+  verify(token, env.PRIVATE_KEY, (err: any, user: any) => {
+    if (err)
+      return false;
 
-// export function verifyToken(c, next) {
-//   const { authorization } = c.req?.headers;
-//   const { originalUrl, method } = c.req;
+    c.env.outgoing.req.user = user;
 
-//   if (
-//     (originalUrl === "/hr/user/login" && method === "POST")
-//     || originalUrl.startsWith("/api-docs")
-//   ) {
-//     return next();
-//   }
+    return true;
+  });
 
-//   if (typeof authorization === "undefined") {
-//     return c.json({ error: "Unauthorized" });
-//   }
-
-//   const token = authorization?.split(" ")[1];
-//   verify(token, env.PRIVATE_KEY, (err, user) => {
-//     if (err) {
-//       return c.json({ error: "Forbidden" });
-//     }
-
-//     c.req.user = user;
-
-//     next();
-//   });
-// }
-
+  return false;
+}

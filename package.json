@@ -29,6 +29,7 @@
     "drizzle-zod": "^0.5.1",
     "hono": "^4.6.17",
     "hono-pino": "^0.7.0",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1",
     "pino": "^9.6.0",
     "pino-pretty": "^13.0.0",
@@ -37,6 +38,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.14.0",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.10.7",
     "cross-env": "^7.0.3",
     "drizzle-kit": "^0.30.2",

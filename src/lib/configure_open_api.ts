@@ -13,7 +13,7 @@ export default function configureOpenAPI(app: AppOpenAPI) {
     // basePath: env.SERVER_URL,
 
     info: {
-      title: "FZL ERP API",
+      title: packageJSON.name,
       description: "FZL API Documentation",
       contact: { name: "RBR", email: "rafsan@fortunezip.com" },
       version: packageJSON.version,
@@ -28,7 +28,7 @@ export default function configureOpenAPI(app: AppOpenAPI) {
   app.get(
     "/reference",
     apiReference({
-      pageTitle: "FZL API Reference",
+      pageTitle: packageJSON.name,
       theme: "kepler",
       layout: "modern",
       // layout: "classic",
@@ -40,20 +40,40 @@ export default function configureOpenAPI(app: AppOpenAPI) {
       spec: {
         url: "/doc",
       },
-      // hideModels: true,
+      hideModels: true,
+      // showSidebar: false,
       hideDownloadButton: true,
+      // hideTestRequestButton: true,
       hiddenClients: true,
-      withDefaultFonts: true,
+      // withDefaultFonts: true,
       authentication: {
+        // customSecurity: true,
         preferredSecurityScheme: "bearerAuth",
         securitySchemes: {
-          bearerAuth: {
-            type: "http",
-            description: "JWT Authorization header using the Bearer scheme. Please input without Bearer prefix",
-            name: "Authorization",
-            in: "header",
-            scheme: "bearer",
-            bearerFormat: "JWT",
+          // bearerAuth: {
+          //   type: "http",
+          //   description: "JWT Authorization header using the Bearer scheme. Please input without Bearer prefix",
+          //   scheme: "bearer",
+          //   bearerFormat: "JWT",
+          //   name: "Authorization",
+          //   in: "header",
+          // },
+          httpBearer: {
+            label: "HTTP Bearer",
+            payload: {
+              type: "http",
+              scheme: "bearer",
+              nameKey: "httpBearer",
+            },
+          },
+        },
+        http: {
+          basic: {
+            username: "anik",
+            password: "anik",
+          },
+          bearer: {
+            token: "sdjfkfj",
           },
         },
 
