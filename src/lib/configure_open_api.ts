@@ -40,7 +40,7 @@ export default function configureOpenAPI(app: AppOpenAPI) {
       spec: {
         url: "/doc",
       },
-      hideModels: true,
+      // hideModels: true,
       // showSidebar: false,
       hideDownloadButton: true,
       // hideTestRequestButton: true,

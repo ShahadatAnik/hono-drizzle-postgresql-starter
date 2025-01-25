@@ -1,15 +1,8 @@
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { z } from "zod";
+import type { JWTPayload } from 'hono/utils/jwt/types';
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 
-import { users } from "../schema";
-
-export interface IPayload {
-  uuid: string;
-  username: string;
-  email: string;
-  can_access: string | null;
-  exp: number;
-}
+import { z } from 'zod';
+import { users } from '../schema';
 
 //* crud
 export const selectSchema = createSelectSchema(users);
@@ -26,28 +19,30 @@ export const signinOutputSchema = z.object({
     email: z.string(),
     can_access: z.string(),
     exp: z.number(),
-  }) as z.Schema<IPayload>,
+  }) as z.Schema<JWTPayload>,
   token: z.string(),
 });
 
 export const insertSchema = createInsertSchema(
   users,
   {
-    uuid: schema => schema.uuid.length(15),
+    uuid: schema => schema.uuid.length(21),
     name: schema => schema.name.min(1),
     email: schema => schema.email.min(1),
     pass: schema => schema.pass.min(4).max(50),
+    designation_uuid: schema => schema.designation_uuid.length(21),
+    department_uuid: schema => schema.department_uuid.length(21),
   },
 ).required({
   uuid: true,
   name: true,
+  designation_uuid: true,
+  department_uuid: true,
   email: true,
   pass: true,
   created_at: true,
 }).omit({
   status: true,
-  designation_uuid: true,
-  department_uuid: true,
   can_access: true,
   ext: true,
   phone: true,

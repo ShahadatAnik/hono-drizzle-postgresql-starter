@@ -1,29 +1,29 @@
-import antfu from "@antfu/eslint-config";
+import antfu from '@antfu/eslint-config';
 
 export default antfu({
-  type: "app",
+  type: 'app',
   typescript: true,
   formatters: true,
   stylistic: {
     indent: 2,
     semi: true,
-    quotes: "double",
+    quotes: 'single',
   },
-  ignores: ["**/migrations/*"],
+  ignores: ['**/migrations/*'],
 }, {
   rules: {
-    "no-console": ["warn"],
-    "antfu/no-top-level-await": ["off"],
-    "node/prefer-global/process": ["off"],
-    "node/no-process-env": ["error"],
+    'no-console': ['warn'],
+    'antfu/no-top-level-await': ['off'],
+    'node/prefer-global/process': ['off'],
+    'node/no-process-env': ['error'],
     // "perfectionist/sort-imports": ["error", {
     //   internalPattern: ["@/**"],
     // }],
-    "unicorn/filename-case": ["error", {
-      case: "snakeCase",
-      ignore: ["README.md"],
+    'unicorn/filename-case': ['error', {
+      case: 'snakeCase',
+      ignore: ['README.md'],
     }],
-    "no-use-before-define": "off",
-    "@typescript-eslint/no-use-before-define": "error",
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': 'error',
   },
 });

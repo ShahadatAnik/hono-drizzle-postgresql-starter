@@ -1,13 +1,13 @@
-import type { AppRouteHandler } from "@/lib/types";
-import type { CreateRoute, GetOneRoute, ListRoute, PatchRoute, RemoveRoute, SigninRoute } from "../users/routes";
-import type { IPayload } from "./utils";
-import db from "@/db";
-import { noObjectFoundSchema } from "@/lib/constants";
-import { ComparePass, CreateToken, HashPass } from "@/middlewares/auth";
-import { eq } from "drizzle-orm";
-import * as HttpStatusCodes from "stoker/http-status-codes";
-import * as HttpStatusPhrases from "stoker/http-status-phrases";
-import { users } from "../schema";
+import type { AppRouteHandler } from '@/lib/types';
+import type { JWTPayload } from 'hono/utils/jwt/types';
+import type { CreateRoute, GetOneRoute, ListRoute, PatchRoute, RemoveRoute, SigninRoute } from '../users/routes';
+import db from '@/db';
+import { noObjectFoundSchema } from '@/lib/constants';
+import { ComparePass, CreateToken, HashPass } from '@/middlewares/auth';
+import { eq } from 'drizzle-orm';
+import * as HttpStatusCodes from 'stoker/http-status-codes';
+import * as HttpStatusPhrases from 'stoker/http-status-phrases';
+import { users } from '../schema';
 
 export const list: AppRouteHandler<ListRoute> = async (c) => {
   const result = await db.query.users.findMany();
@@ -15,20 +15,19 @@ export const list: AppRouteHandler<ListRoute> = async (c) => {
 };
 
 export const create: AppRouteHandler<CreateRoute> = async (c) => {
-  const value = c.req.valid("json");
-
+  const value = c.req.valid('json');
   const { pass } = await c.req.json();
-  const hashPass = HashPass(pass);
-  value.pass = hashPass;
+
+  value.pass = await HashPass(pass);
 
   const [inserted] = await db.insert(users).values(value).returning();
   return c.json(inserted, HttpStatusCodes.OK);
 };
 
 export const signin: AppRouteHandler<SigninRoute> = async (c) => {
-  const updates = c.req.valid("json");
+  const updates = c.req.valid('json');
 
-  console.warn("updates", updates);
+  console.warn('updates', updates);
 
   if (Object.keys(updates).length === 0) {
     return c.json(
@@ -53,18 +52,18 @@ export const signin: AppRouteHandler<SigninRoute> = async (c) => {
 
   if (!value.status) {
     return c.json(
-      { message: "Account is disabled" },
+      { message: 'Account is disabled' },
       HttpStatusCodes.UNAUTHORIZED,
     );
   }
 
   const match = ComparePass(pass, value.pass);
   if (!match) {
-    return c.json({ message: "Email/Password does not match" }, HttpStatusCodes.UNAUTHORIZED);
+    return c.json({ message: 'Email/Password does not match' }, HttpStatusCodes.UNAUTHORIZED);
   }
 
   const now = Math.floor(Date.now() / 1000);
-  const payload: IPayload = {
+  const payload: JWTPayload = {
     uuid: value.uuid,
     username: value.name,
     email: value.email,
@@ -78,7 +77,7 @@ export const signin: AppRouteHandler<SigninRoute> = async (c) => {
 };
 
 export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
-  const { uuid } = c.req.valid("param");
+  const { uuid } = c.req.valid('param');
   const value = await db.query.users.findFirst({
     where(fields, operators) {
       return operators.eq(fields.uuid, uuid);
@@ -96,8 +95,8 @@ export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
 };
 
 export const patch: AppRouteHandler<PatchRoute> = async (c) => {
-  const { uuid } = c.req.valid("param");
-  const updates = c.req.valid("json");
+  const { uuid } = c.req.valid('param');
+  const updates = c.req.valid('json');
 
   if (Object.keys(updates).length === 0) {
     return c.json(
@@ -122,7 +121,7 @@ export const patch: AppRouteHandler<PatchRoute> = async (c) => {
 };
 
 export const remove: AppRouteHandler<RemoveRoute> = async (c) => {
-  const { uuid } = c.req.valid("param");
+  const { uuid } = c.req.valid('param');
   const result = await db.delete(users)
     .where(eq(users.uuid, uuid));
 

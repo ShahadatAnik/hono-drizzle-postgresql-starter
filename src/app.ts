@@ -1,17 +1,24 @@
-import configureOpenAPI from "@/lib/configure_open_api";
-import createApp from "@/lib/create_app";
-import { VerifyToken } from "@/middlewares/auth";
-import routes from "@/routes/index.route";
-import { bearerAuth } from "hono/bearer-auth";
+import configureOpenAPI from '@/lib/configure_open_api';
+import createApp from '@/lib/create_app';
+import { VerifyToken } from '@/middlewares/auth';
+import routes from '@/routes/index.route';
+import { bearerAuth } from 'hono/bearer-auth';
+import { cors } from 'hono/cors';
 
 const app = createApp();
 
 configureOpenAPI(app);
 
 // ! don't put a trailing slash
-export const basePath = "/v1";
+export const basePath = '/v1';
 
-app.use("/*", bearerAuth({
+app.use(`${basePath}/*`, cors({
+  origin: ['http://localhost:3005', 'http://localhost:3000'],
+  maxAge: 600,
+  credentials: true,
+}));
+
+app.use(`${basePath}/*`, bearerAuth({
   verifyToken: VerifyToken,
 }));
 

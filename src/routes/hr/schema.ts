@@ -43,11 +43,11 @@ export const users = hr.table("users", {
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   pass: text("pass").notNull(),
-  designation_uuid: defaultUUID("designation_uuid").references(() => designation.uuid, {
+  designation_uuid: defaultUUID("designation_uuid").notNull().references(() => designation.uuid, {
     onDelete: "set null",
     onUpdate: "cascade",
   }),
-  department_uuid: defaultUUID("department_uuid").references(() => department.uuid, {
+  department_uuid: defaultUUID("department_uuid").notNull().references(() => department.uuid, {
     onDelete: "set null",
     onUpdate: "cascade",
   }),
