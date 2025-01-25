@@ -3,7 +3,7 @@ import type { CreateRoute, GetOneRoute, ListRoute, PatchRoute, RemoveRoute, Sign
 import type { IPayload } from "./utils";
 import db from "@/db";
 import { noObjectFoundSchema } from "@/lib/constants";
-import { ComparePass, CreateToken, hashPassword } from "@/middlewares/auth";
+import { ComparePass, CreateToken, HashPass } from "@/middlewares/auth";
 import { eq } from "drizzle-orm";
 import * as HttpStatusCodes from "stoker/http-status-codes";
 import * as HttpStatusPhrases from "stoker/http-status-phrases";
@@ -18,7 +18,7 @@ export const create: AppRouteHandler<CreateRoute> = async (c) => {
   const value = c.req.valid("json");
 
   const { pass } = await c.req.json();
-  const hashPass = hashPassword(pass);
+  const hashPass = HashPass(pass);
   value.pass = hashPass;
 
   const [inserted] = await db.insert(users).values(value).returning();
