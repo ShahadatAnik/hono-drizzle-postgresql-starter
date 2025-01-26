@@ -88,20 +88,21 @@ See [src/routes/hr](./src/routes/hr/) for an example Open API group.
 
 > Copy this folder / use as an example for your route groups.
 
-- Routing Folder [routes](./src/routes)
-  - Schema [hr](./src/routes/hr)
-    In this following schema has 3 tables called `users`, `department` and `designation`.
-    Under each table has these folders, for example in [users](./src/routes/hr/users):
-    - Hono request handlers defined in [handlers.ts](./src/routes/hr/users/handlers.ts)
-    - Router created in [index.ts](./src/routes/hr/users/index.ts)
-    - Route definitions defined in [routes.ts](./src/routes/hr/users/routes.ts)
-    - Zod validators defined in [utils.ts](./src/routes/hr/users/utils.ts)
-  - All routes are merged in [index.route.ts](./src/routes/index.route.ts)
-  - All schema are merged in [index.schema.ts](./src/routes/index.schema.ts)
+Routing Folder [routes](./src/routes)
 
+- Schema [hr](./src/routes/hr)
+  > In this following schema has 3 tables called `users`, `department` and `designation`.
+  > Under each table has these folders, for example in [users](./src/routes/hr/users):
+  - Hono request handlers defined in [handlers.ts](./src/routes/hr/users/handlers.ts)
+  - Router created in [index.ts](./src/routes/hr/users/index.ts)
+  - Route definitions defined in [routes.ts](./src/routes/hr/users/routes.ts)
+  - Zod validators defined in [utils.ts](./src/routes/hr/users/utils.ts)
+
+All routes are merged in [index.route.ts](./src/routes/index.route.ts)
+All schema are merged in [index.schema.ts](./src/routes/index.schema.ts)
 All app routes are grouped together and exported into single type as `AppType` in [app.ts](./src/app.ts) for use in [RPC / hono/client](https://hono.dev/docs/guides/rpc).
 
-## Endpoints
+## Endpoints of `hr.users`
 
 | Operation | Path             | Description              |
 | --------- | ---------------- | ------------------------ |
