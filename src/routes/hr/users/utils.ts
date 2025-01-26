@@ -1,7 +1,8 @@
 import type { JWTPayload } from 'hono/utils/jwt/types';
-import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
+
 import { users } from '../schema';
 
 //* crud
@@ -27,11 +28,11 @@ export const insertSchema = createInsertSchema(
   users,
   {
     uuid: schema => schema.uuid.length(21),
-    name: schema => schema.name.min(1),
+    name: schema => schema.name.min(1).max(255),
+    department_uuid: schema => schema.department_uuid.length(21),
+    designation_uuid: schema => schema.designation_uuid.length(21),
     email: schema => schema.email.min(1),
     pass: schema => schema.pass.min(4).max(50),
-    designation_uuid: schema => schema.designation_uuid.length(21),
-    department_uuid: schema => schema.department_uuid.length(21),
   },
 ).required({
   uuid: true,
@@ -44,7 +45,6 @@ export const insertSchema = createInsertSchema(
 }).omit({
   status: true,
   can_access: true,
-  ext: true,
   phone: true,
   updated_at: true,
   remarks: true,

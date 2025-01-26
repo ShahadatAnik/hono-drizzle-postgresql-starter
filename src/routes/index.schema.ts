@@ -1,9 +1,9 @@
-import * as commercial from "./commercial/schema";
-import * as hr from "./hr/schema";
+//* Import all schemas
+import * as hr from './hr/schema';
 
 const schema = {
-  ...commercial,
   ...hr,
+  //* assign all schemas here
 };
 
 export type Schema = typeof schema;

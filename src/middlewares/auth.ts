@@ -1,8 +1,10 @@
 import type { Context } from 'hono';
 import type { JWTPayload } from 'hono/utils/jwt/types';
-import env from '@/env';
+
 import { compareSync, hash } from 'bcrypt-ts';
 import { sign, verify } from 'hono/jwt';
+
+import env from '@/env';
 
 export async function HashPass(password: string) {
   const hashPassword = await hash(password, env.SALT);
@@ -21,8 +23,9 @@ export async function CreateToken(payload: JWTPayload) {
 export async function VerifyToken(token: string, c: Context) {
   const { url, method } = c.env.outgoing.req;
 
-  if (url === '/v1/signin' && method === 'POST')
+  if (url === '/v1/signin' && method === 'POST') {
     return true;
+  }
 
   const decodedPayload = await verify(token, env.PRIVATE_KEY);
 

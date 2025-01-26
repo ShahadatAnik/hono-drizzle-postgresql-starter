@@ -1,6 +1,6 @@
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 
-import { department } from "../schema";
+import { department } from '../schema';
 
 //* crud
 export const selectSchema = createSelectSchema(department);
@@ -8,12 +8,12 @@ export const selectSchema = createSelectSchema(department);
 export const insertSchema = createInsertSchema(
   department,
   {
-    uuid: schema => schema.uuid.length(15),
-    department: schema => schema.department.min(1),
+    uuid: schema => schema.uuid.length(21),
+    name: schema => schema.name.min(1),
   },
 ).required({
   uuid: true,
-  department: true,
+  name: true,
   created_at: true,
 }).omit({
   updated_at: true,
