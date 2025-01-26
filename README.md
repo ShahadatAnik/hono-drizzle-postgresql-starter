@@ -98,8 +98,8 @@ Routing Folder [routes](./src/routes)
   - Route definitions defined in [routes.ts](./src/routes/hr/users/routes.ts)
   - Zod validators defined in [utils.ts](./src/routes/hr/users/utils.ts)
 
-All routes are merged in [index.route.ts](./src/routes/index.route.ts)
-All schema are merged in [index.schema.ts](./src/routes/index.schema.ts)
+All routes are merged in [index.route.ts](./src/routes/index.route.ts)<br>
+All schema are merged in [index.schema.ts](./src/routes/index.schema.ts)<br>
 All app routes are grouped together and exported into single type as `AppType` in [app.ts](./src/app.ts) for use in [RPC / hono/client](https://hono.dev/docs/guides/rpc).
 
 ## Endpoints of `hr.users`
